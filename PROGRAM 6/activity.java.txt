@@ -1,0 +1,84 @@
+package com.example.myapplication;
+
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+    EditText name,email,password;
+    RadioButton male,female;
+    CheckBox check;
+    Button submit;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+
+        name = findViewById(R.id.name);
+        email = findViewById(R.id.email);
+        password = findViewById(R.id.password);
+        male = findViewById(R.id.rbmale);
+        female = findViewById(R.id.rbfemale);
+        check = findViewById(R.id.checkbox);
+        submit = findViewById(R.id.submit);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                validate();
+
+            }
+        });
+
+
+    }
+private void validate(){
+        if(TextUtils.isEmpty(name.getText().toString())){
+            name.setError("Enter name");
+            return;
+        }
+    if (!Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) {
+        email.setError("Enter a valid email");
+        return;
+    }
+
+    // Password Validation
+    if (password.getText().toString().length() < 6) {
+        password.setError("Password must be at least 6 characters");
+        return;
+    }
+
+    // Gender Validation
+    if (!male.isChecked() && !female.isChecked()) {
+        Toast.makeText(this, "Select your gender", Toast.LENGTH_SHORT).show();
+        return;
+    }
+
+    // Terms Checkbox Validation
+    if (!check.isChecked()) {
+        Toast.makeText(this, "Please accept Terms & Conditions", Toast.LENGTH_SHORT).show();
+        return;
+    }
+
+    // If all validations pass
+    Toast.makeText(this, "Form Submitted Successfully!", Toast.LENGTH_LONG).show();
+}
+}
+
+
+
+
+
